@@ -9,10 +9,11 @@ const MOCK_TUTOR_PROFILE = {
   bio: "I have 7+ years of experience helping learners excel in algebra, calculus, and exam prep. I focus on clear explanations, plenty of practice, and building confidence.",
   city: "Baku",
   districts: ["Yasamal", "Nasimi"],
-  price: 20,
+  price: 200,
   rating: 4.9,
   reviewsCount: 15,
   subjects: ["Algebra", "Calculus", "SAT Math", "Physics"],
+  phone: "+994 50 111 22 33",
   photo: "https://i.pravatar.cc/200?img=47",
   qualifications: [
     "B.Sc. in Mathematics, Baku State University",
@@ -111,7 +112,7 @@ const TutorProfile = () => {
         <div className="profile-header__right">
           <div className="profile-stat">
             <span className="label">Rate</span>
-            <strong>{tutor.price} AZN/hr</strong>
+            <strong>{tutor.price} AZN/month</strong>
           </div>
           <div className="profile-stat">
             <span className="label">Rating</span>
@@ -125,6 +126,10 @@ const TutorProfile = () => {
             <strong>
               {tutor.city}, {tutor.districts[0]}
             </strong>
+          </div>
+          <div className="profile-stat">
+            <span className="label">Phone</span>
+            <strong>{tutor.phone}</strong>
           </div>
         </div>
       </header>

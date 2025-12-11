@@ -11,8 +11,7 @@ const MOCK_TUTORS = [
     rating: 4.8,
     reviews: 12,
     price: 20,
-    photo: "https://i.pravatar.cc/150?img=47",
-    availableThisWeek: true
+    availabilityDays: ["Monday", "Wednesday"]
   },
   {
     id: "2",
@@ -23,8 +22,7 @@ const MOCK_TUTORS = [
     rating: 4.6,
     reviews: 9,
     price: 18,
-    photo: "https://i.pravatar.cc/150?img=12",
-    availableThisWeek: false
+    availabilityDays: ["Tuesday", "Thursday"]
   },
   {
     id: "3",
@@ -35,8 +33,7 @@ const MOCK_TUTORS = [
     rating: 4.9,
     reviews: 21,
     price: 25,
-    photo: "https://i.pravatar.cc/150?img=32",
-    availableThisWeek: true
+    availabilityDays: ["Monday", "Friday"]
   },
   {
     id: "4",
@@ -47,8 +44,7 @@ const MOCK_TUTORS = [
     rating: 4.5,
     reviews: 7,
     price: 15,
-    photo: "https://i.pravatar.cc/150?img=5",
-    availableThisWeek: true
+    availabilityDays: ["Wednesday", "Saturday"]
   },
   {
     id: "5",
@@ -59,8 +55,7 @@ const MOCK_TUTORS = [
     rating: 4.7,
     reviews: 14,
     price: 22,
-    photo: "https://i.pravatar.cc/150?img=25",
-    availableThisWeek: false
+    availabilityDays: ["Tuesday", "Thursday"]
   },
   {
     id: "6",
@@ -71,8 +66,7 @@ const MOCK_TUTORS = [
     rating: 4.3,
     reviews: 5,
     price: 17,
-    photo: "https://i.pravatar.cc/150?img=14",
-    availableThisWeek: true
+    availabilityDays: ["Sunday"]
   }
 ];
 
@@ -84,8 +78,8 @@ const SearchResults = () => {
     minPrice: "",
     maxPrice: "",
     minRating: "",
-    availability: false,
-    sortBy: "relevance"
+    availabilityDays: [],
+    sortBy: "rating"
   });
 
   const handleChange = (e) => {
@@ -96,6 +90,18 @@ const SearchResults = () => {
     }));
   };
 
+  const toggleDay = (day) => {
+    setFilters((prev) => {
+      const hasDay = prev.availabilityDays.includes(day);
+      return {
+        ...prev,
+        availabilityDays: hasDay
+          ? prev.availabilityDays.filter((d) => d !== day)
+          : [...prev.availabilityDays, day]
+      };
+    });
+  };
+
   const filteredTutors = useMemo(() => {
     const {
       city,
@@ -104,7 +110,7 @@ const SearchResults = () => {
       minPrice,
       maxPrice,
       minRating,
-      availability
+      availabilityDays
     } = filters;
     return MOCK_TUTORS.filter((tutor) => {
       if (city) {
@@ -128,7 +134,12 @@ const SearchResults = () => {
       if (minPrice && tutor.price < Number(minPrice)) return false;
       if (maxPrice && tutor.price > Number(maxPrice)) return false;
       if (minRating && tutor.rating < Number(minRating)) return false;
-      if (availability && !tutor.availableThisWeek) return false;
+      if (availabilityDays.length) {
+        const hasDay = tutor.availabilityDays?.some((day) =>
+          availabilityDays.includes(day)
+        );
+        if (!hasDay) return false;
+      }
       return true;
     });
   }, [filters]);
@@ -136,12 +147,12 @@ const SearchResults = () => {
   const sortedTutors = useMemo(() => {
     const list = [...filteredTutors];
     switch (filters.sortBy) {
+      case "rating":
+        return list.sort((a, b) => b.rating - a.rating);
       case "price-asc":
         return list.sort((a, b) => a.price - b.price);
       case "price-desc":
         return list.sort((a, b) => b.price - a.price);
-      case "rating":
-        return list.sort((a, b) => b.rating - a.rating);
       default:
         return list;
     }
@@ -224,15 +235,21 @@ const SearchResults = () => {
                 onChange={handleChange}
               />
             </label>
-            <label className="checkbox">
-              <input
-                type="checkbox"
-                name="availability"
-                checked={filters.availability}
-                onChange={handleChange}
-              />
-              <span>Available this week</span>
-            </label>
+            <div className="field">
+              <span>Available weekdays</span>
+              <div className="weekday-grid">
+                {["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"].map((day) => (
+                  <label key={day} className="checkbox">
+                    <input
+                      type="checkbox"
+                      checked={filters.availabilityDays.includes(day)}
+                      onChange={() => toggleDay(day)}
+                    />
+                    <span>{day}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </aside>
@@ -250,10 +267,9 @@ const SearchResults = () => {
               value={filters.sortBy}
               onChange={handleChange}
             >
-              <option value="relevance">Relevance</option>
+              <option value="rating">Rating</option>
               <option value="price-asc">Price: Low to High</option>
               <option value="price-desc">Price: High to Low</option>
-              <option value="rating">Rating</option>
             </select>
           </label>
         </header>

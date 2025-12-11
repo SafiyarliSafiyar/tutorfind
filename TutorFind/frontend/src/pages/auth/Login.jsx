@@ -5,8 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 const Login = () => {
   const [form, setForm] = useState({
     email: "",
-    password: "",
-    role: "tutor"
+    password: ""
   });
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -22,7 +21,7 @@ const Login = () => {
     login({
       name: nameFromEmail,
       email: form.email,
-      role: form.role
+      role: "tutor"
     });
     navigate("/");
   };
@@ -55,13 +54,6 @@ const Login = () => {
             autoComplete="current-password"
             required
           />
-        </label>
-        <label className="field">
-          <span>Role</span>
-          <select name="role" value={form.role} onChange={handleChange}>
-            <option value="tutor">Tutor</option>
-            <option value="learner">Learner</option>
-          </select>
         </label>
         <div className="form-actions">
           <button type="submit" className="btn btn--primary">

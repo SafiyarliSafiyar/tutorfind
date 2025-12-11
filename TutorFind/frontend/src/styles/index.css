@@ -198,9 +198,12 @@
   .price-row {
     @apply grid gap-2 sm:grid-cols-2;
   }
-  .checkbox {
-    @apply flex items-center gap-2 font-semibold text-slate-900;
-  }
+.checkbox {
+  @apply flex items-center gap-2 font-semibold text-slate-900;
+}
+.weekday-grid {
+  @apply grid gap-1;
+}
   .results-panel {
     @apply bg-white border border-slate-200 rounded-2xl shadow-lg shadow-slate-900/10 p-5 grid gap-4;
   }

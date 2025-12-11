@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 const initialProfile = {
-  name: "Aysel Mammadova",
+  firstName: "Aysel",
+  lastName: "Mammadova",
   title: "Experienced Math Tutor",
   city: "Baku",
   district: "Yasamal",
-  rate: 20,
+  rate: 200,
+  phone: "+994 50 111 22 33",
   bio: "I have 7+ years of experience helping learners excel in algebra, calculus, and exam prep. I focus on clear explanations, plenty of practice, and building confidence.",
   subjects: "Algebra, Calculus, SAT Math, Physics",
   qualifications:
@@ -31,17 +33,30 @@ const ProfileSettings = () => {
       <div className="card">
         <h2>Profile Settings</h2>
         <form className="settings-form" onSubmit={handleSubmit}>
-          <div className="field">
-            <span>Full Name</span>
+        <div className="two-col">
+          <label className="field">
+            <span>First Name</span>
             <input
-              name="name"
-              value={form.name}
+              name="firstName"
+              value={form.firstName}
               onChange={(e) =>
-                setForm((prev) => ({ ...prev, name: e.target.value }))
+                setForm((prev) => ({ ...prev, firstName: e.target.value }))
               }
               required
             />
-          </div>
+          </label>
+          <label className="field">
+            <span>Last Name</span>
+            <input
+              name="lastName"
+              value={form.lastName}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, lastName: e.target.value }))
+              }
+              required
+            />
+          </label>
+        </div>
 
         {isTutor && (
           <div className="field">
@@ -81,16 +96,30 @@ const ProfileSettings = () => {
             </label>
           </div>
 
+          {isTutor && (
+            <div className="field">
+              <span>Monthly Payment (AZN)</span>
+              <input
+                type="number"
+                name="rate"
+                min={0}
+                value={form.rate}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, rate: e.target.value }))
+                }
+              />
+            </div>
+          )}
+
           <div className="field">
-            <span>Hourly Rate (AZN)</span>
+            <span>Phone</span>
             <input
-              type="number"
-              name="rate"
-              min={0}
-              value={form.rate}
+              name="phone"
+              value={form.phone}
               onChange={(e) =>
-                setForm((prev) => ({ ...prev, rate: e.target.value }))
+                setForm((prev) => ({ ...prev, phone: e.target.value }))
               }
+              placeholder="+994 ..."
             />
           </div>
 

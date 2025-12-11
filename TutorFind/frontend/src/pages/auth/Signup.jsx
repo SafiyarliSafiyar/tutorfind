@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 
 const Signup = () => {
   const [form, setForm] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -50,16 +51,28 @@ const Signup = () => {
       </div>
 
       <form className="stacked-form" onSubmit={handleSubmit}>
-        <label className="field">
-          <span>Full name</span>
-          <input
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            autoComplete="name"
-            required
-          />
-        </label>
+        <div className="two-col">
+          <label className="field">
+            <span>First name</span>
+            <input
+              name="firstName"
+              value={form.firstName}
+              onChange={handleChange}
+              autoComplete="given-name"
+              required
+            />
+          </label>
+          <label className="field">
+            <span>Last name</span>
+            <input
+              name="lastName"
+              value={form.lastName}
+              onChange={handleChange}
+              autoComplete="family-name"
+              required
+            />
+          </label>
+        </div>
         <label className="field">
           <span>Email</span>
           <input
